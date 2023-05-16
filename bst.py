@@ -200,7 +200,7 @@ class BinarySearchTree(Generic[K, I]):
             left_size = current.left.subtree_size
         else:
             left_size = 0
-            
+
         if k == left_size + 1:
             return current
         elif k < left_size + 1:
