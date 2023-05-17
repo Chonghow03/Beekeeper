@@ -42,6 +42,7 @@ class Percentiles(Generic[T]):
         return out
 
 
+
 if __name__ == "__main__":
     points = list(range(50))
     import random
