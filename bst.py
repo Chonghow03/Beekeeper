@@ -167,8 +167,23 @@ class BinarySearchTree(Generic[K, I]):
             - A TreeNode by given key
 
             Complexity:
-            - Worst case: O(1), return statement
-            - Best case: O(1), return statement
+            - Worst case: O(CompK * D) where D is the depth of the tree
+                - In balanced BST case: O(log(N) * (Comp== + Comp< + Comp>))
+                    - Where N is the number of node in BST
+                    - When the target node is a leaf
+                    - Since the BST is balanced, so we have to traverse nearly half of the node for checking each node.
+
+                - In unbalanced BST case: O(N * (Comp== + Comp< + Comp>))
+                    - Where N is the number of node in BST
+                    - When the target node is a leaf or key not found
+                    - Since the BST is unbalanced, so we have to traverse almost every node for checking.
+                    - Return statement is constant time, O(1).
+
+            - Best case:
+                - In balanced and unbalanced BST case: O(Comp==)
+                    - When the target node is the root,
+                    - thus it just have to compare for checking the key once and directly return.
+                    - Return statement is constant time, O(1).
        """
         if current is None:
             raise KeyError('Key not found: {0}'.format(key))
@@ -182,48 +197,51 @@ class BinarySearchTree(Generic[K, I]):
     def __setitem__(self, key: K, item: I) -> None:
         """
             Explain:
-            - Returns the number of nodes in the tree.
+            - set the root to the result of the function insert_aux
 
             Args:
-            - None
+            - K, key of the node
+            - I, item have to store in the BST with certain node
 
             Raises:
             - None
 
             Returns:
-            - length of the BST
+            - None
 
             Complexity:
-            - Worst case: O(1), return statement
-            - Best case: O(1), return statement
+            - Worst case: O(insert_aux()) (worst)
+            - Best case: O(insert_aux()) (best)
+            - Assignment is constant time, O(1)
        """
         self.root = self.insert_aux(self.root, key, item)
 
     def insert_aux(self, current: TreeNode, key: K, item: I) -> TreeNode:
         """
             Explain:
-            - Returns the number of nodes in the tree.
+            - Attempts to insert an item into the tree, it uses the Key to insert it
 
             Args:
-            - None
+            - current, TreeNode which is the root of the BST
+            - key, the key of the node have to insert
+            - item, the item of the node have to store
 
             Raises:
-            - None
+            - ValueError, if the item is already existed
 
             Returns:
-            - length of the BST
+            - current, the root of the BST
 
             Complexity:
-            - Worst case: O(1), return statement
-            - Best case: O(1), return statement
+            - Worst case: O(CompK * D) inserting at the bottom of the tree
+                        - where D is the depth of the tree
+                        - CompK is the complexity of comparing the keys
+                        - All assignments, numerical operations, return statements are constant time, O(1).
+
+            - Best case: O(CompK) inserts the item at the root.
+                        - CompK is the complexity of comparing the keys
+                        - All assignments, numerical operations, return statements are constant time, O(1).
        """
-        """
-            Attempts to insert an item into the tree, it uses the Key to insert it
-            :complexity best: O(CompK) inserts the item at the root.
-            :complexity worst: O(CompK * D) inserting at the bottom of the tree
-            where D is the depth of the tree
-            CompK is the complexity of comparing the keys
-        """
         if current is None:  # base case: at the leaf
             current = TreeNode(key, item=item)
             current.subtree_size -= 1  # init() sets it to 1d already
@@ -241,47 +259,43 @@ class BinarySearchTree(Generic[K, I]):
     def __delitem__(self, key: K) -> None:
         """
             Explain:
-            - Returns the number of nodes in the tree.
+            -
 
             Args:
-            - None
+            - K, the key of the node have to delete
 
             Raises:
             - None
 
             Returns:
-            - length of the BST
+            - None
 
             Complexity:
-            - Worst case: O(1), return statement
-            - Best case: O(1), return statement
+            - Worst case: O(delete_aux()) (worst)
+            - Best case: O(delete_aux()) (best)
        """
         self.root = self.delete_aux(self.root, key)
 
     def delete_aux(self, current: TreeNode, key: K) -> TreeNode:
         """
             Explain:
-            - Returns the number of nodes in the tree.
+            - Attempts to delete an item from the tree, it uses the Key to determine the node to delete.
 
             Args:
-            - None
+            - current, TreeNode which is the root of the BST.
+            - K, the key of the node to determine the node to delete.
 
             Raises:
-            - None
+            - ValueError, if the key is not found that means the node is not occur.
 
             Returns:
-            - length of the BST
+            - A TreeNode which is the root of the BST
 
             Complexity:
-            - Worst case: O(1), return statement
-            - Best case: O(1), return statement
+            - Worst case:
+            - Best case:
        """
-        """
-            Attempts to delete an item from the tree, it uses the Key to
-            determine the node to delete.
-        """
-
-        if current is None:  # key not found
+        if current is None:
             raise ValueError('Deleting non-existent item')
         elif key < current.key:
             current.left  = self.delete_aux(current.left, key)
@@ -311,26 +325,28 @@ class BinarySearchTree(Generic[K, I]):
     def get_successor(self, current: TreeNode) -> TreeNode:
         """
             Explain:
-            - Returns the number of nodes in the tree.
+            - Get successor of the current node.
+            - It should be a child node having the smallest key among all the larger keys.
 
             Args:
-            - None
-
+            - current, a Treenode.
             Raises:
-            - None
+            - ValueError, if there is no existing item.
 
             Returns:
-            - length of the BST
+            - A TreeNode which is the successor of the current node.
 
             Complexity:
-            - Worst case: O(1), return statement
-            - Best case: O(1), return statement
+            - Worst case: O(D)
+                        - where D is the leftmost depth of the current.right subtree.
+                        - Since we have to find the successor of the current node
+                        - which located at the left bottom of the current.right,
+                        - thus we have to traverse D times to get the successor node.
+
+            - Best case: O(1)
+                        - When the current node does not have right child node
+                        - All assignments, if statements and return statement are constant time, O(1)
        """
-        """
-            Get successor of the current node.
-            It should be a child node having the smallest key among all the
-            larger keys.
-        """
         if current is None:
             raise ValueError('non existing item')
         if current.right is None:
@@ -343,24 +359,31 @@ class BinarySearchTree(Generic[K, I]):
     def get_minimal(self, current: TreeNode) -> TreeNode:
         """
             Explain:
-            - Returns the number of nodes in the tree.
+            - Get a node having the smallest key in the current sub-tree.
 
             Args:
-            - None
+            - current, a TreeNode.
 
             Raises:
-            - None
+            - ValueError, if there is no existing item.
 
             Returns:
-            - length of the BST
+            - A TreeNode which has the minimum key.
 
             Complexity:
-            - Worst case: O(1), return statement
-            - Best case: O(1), return statement
+            - Worst case: O(L)
+                        - Where L is the total number of leftmost node in BST
+                        - Since the minimal node is located at the left bottom of the tree.
+                        - We just have to traverse the leftmost node, so its depends on how long of the leftmost node.
+
+            - Best case: O(log(N))
+                        - Where N is the total number of the node in the tree.
+                        - Since the minimal node is located at the left bottom of the tree.
+                        - When the tree is balanced,
+                        - we have to traverse the nodes of each left subtree for checking each node.
+                        - Thus, almost half of the nodes of subtree does not require to check.
+
        """
-        """
-            Get a node having the smallest key in the current sub-tree.
-        """
         if current is None:
             raise ValueError('non existing item')
         while current.left is not None:
@@ -371,66 +394,32 @@ class BinarySearchTree(Generic[K, I]):
     def is_leaf(self, current: TreeNode) -> bool:
         """
             Explain:
-            - Returns the number of nodes in the tree.
+            - Simple check whether or not the node is a leaf.
 
             Args:
-            - None
+            - current, a TreeNode
 
             Raises:
             - None
 
             Returns:
-            - length of the BST
+            - Boolean
+                - true, if the node does not have any child node
+                - false, if the node has at least one child node
 
             Complexity:
             - Worst case: O(1), return statement
             - Best case: O(1), return statement
        """
-        """ Simple check whether or not the node is a leaf. """
-
         return current.left is None and current.right is None
 
     def draw(self, to=sys.stdout):
-        """
-            Explain:
-            - Returns the number of nodes in the tree.
-
-            Args:
-            - None
-
-            Raises:
-            - None
-
-            Returns:
-            - length of the BST
-
-            Complexity:
-            - Worst case: O(1), return statement
-            - Best case: O(1), return statement
-       """
         """ Draw the tree in the terminal. """
 
         # get the nodes of the graph to draw recursively
         self.draw_aux(self.root, prefix='', final='', to=to)
 
     def draw_aux(self, current: TreeNode, prefix='', final='', to=sys.stdout) -> K:
-        """
-            Explain:
-            - Returns the number of nodes in the tree.
-
-            Args:
-            - None
-
-            Raises:
-            - None
-
-            Returns:
-            - length of the BST
-
-            Complexity:
-            - Worst case: O(1), return statement
-            - Best case: O(1), return statement
-       """
         """ Draw a node and then its children. """
 
         if current is not None:
@@ -447,24 +436,22 @@ class BinarySearchTree(Generic[K, I]):
     def kth_smallest(self, k: int, current: TreeNode) -> TreeNode:
         """
             Explain:
-            - Returns the number of nodes in the tree.
+            - Finds the kth smallest value by key in the subtree rooted at current.
 
             Args:
-            - None
+            - k, an integer which is the number of how smallest by key in the subtree.
+            - current, a treenode which is the root of the subtree.
 
             Raises:
-            - None
+            - ValueError, if the node is not occur or k is larger than the number of the tree or subtree.
 
             Returns:
-            - length of the BST
+            - A TreeNode which is the kth smallest value by key in the subtree rooted at current.
 
             Complexity:
-            - Worst case: O(1), return statement
-            - Best case: O(1), return statement
+            - Worst case:
+            - Best case:
        """
-        """
-        Finds the kth smallest value by key in the subtree rooted at current.
-        """
         if current is None:
             raise ValueError('node is None')
 
