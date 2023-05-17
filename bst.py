@@ -33,21 +33,71 @@ class BinarySearchTree(Generic[K, I]):
 
     def is_empty(self) -> bool:
         """
-            Checks to see if the bst is empty
-            :complexity: O(1)
-        """
+            Explain:
+            - Checks to see if the bst is empty
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - Boolean
+                -true - if the root is None
+                -false - if the root is not None
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         return self.root is None
 
     def __len__(self) -> int:
-        """ Returns the number of nodes in the tree. """
+        """
+            Explain:
+            - Returns the number of nodes in the tree.
 
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         return self.length
 
     def __contains__(self, key: K) -> bool:
         """
-            Checks to see if the key is in the BST
-            :complexity: see __getitem__(self, key: K) -> (K, I)
-        """
+            Explain:
+            - Checks to see if the key is in the BST
+
+            Args:
+            - K, key of the node
+
+            Raises:
+            - KeyError, if the key is not occur.
+
+            Returns:
+            - Boolean
+                - true, if the node of the key is contained in the BST.
+                - false, if the node of the key is not contained in the BST.
+
+            Complexity:
+            - Worst case: O(__getitem__())(worst) = O(CompK * D)
+                        - when item is not found, where D is the depth of the tree
+                        - CompK is the complexity of comparing the keys
+
+            - Best case: O(__getitem__())(best) = O(CompK)
+                        - when finds the item in the root of the tree
+                        - CompK is the complexity of comparing the keys
+       """
         try:
             _ = self[key]
         except KeyError:
@@ -57,17 +107,69 @@ class BinarySearchTree(Generic[K, I]):
 
     def __getitem__(self, key: K) -> I:
         """
-            Attempts to get an item in the tree, it uses the Key to attempt to find it
-            :complexity best: O(CompK) finds the item in the root of the tree
-            :complexity worst: O(CompK * D) item is not found, where D is the depth of the tree
-            CompK is the complexity of comparing the keys
-        """
+            Explain:
+            - Attempts to get an item in the tree, it uses the Key to attempt to find it.
+
+            Args:
+            - K, key of the node
+
+            Raises:
+            - None
+
+            Returns:
+            - item of the node with key K
+
+            Complexity:
+            - Worst case: O(CompK)
+                        - when finding the item in the root of the tree
+                        - CompK is the complexity of comparing the keys
+
+            - Best case: O(CompK * D)
+                        - when item is not found, where D is the depth of the tree
+                        - CompK is the complexity of comparing the keys
+       """
         return self.get_tree_node_by_key(key).item
 
     def get_tree_node_by_key(self, key: K) -> TreeNode:
+        """
+            Explain:
+            - get the node with the key by calling self.get_tree_node_by_key_aux() function.
+
+            Args:
+            - K, key of the node
+
+            Raises:
+            - None
+
+            Returns:
+            - A TreeNode by given key
+
+            Complexity:
+            - Worst case: O(get_tree_node_by_key_aux()) (worst)
+            - Best case: O(get_tree_node_by_key_aux()) (best)
+            - Return statement is constant time, O(1).
+       """
         return self.get_tree_node_by_key_aux(self.root, key)
 
     def get_tree_node_by_key_aux(self, current: TreeNode, key: K) -> TreeNode:
+        """
+            Explain:
+            - find the node by given key and current
+
+            Args:
+            - current = A Treenode which is the root of the tree
+            - key = The key of the finding node
+
+            Raises:
+            - KeyError, if the key is not found in the Tree.
+
+            Returns:
+            - A TreeNode by given key
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         if current is None:
             raise KeyError('Key not found: {0}'.format(key))
         elif key == current.key:
@@ -78,9 +180,43 @@ class BinarySearchTree(Generic[K, I]):
             return self.get_tree_node_by_key_aux(current.right, key)
 
     def __setitem__(self, key: K, item: I) -> None:
+        """
+            Explain:
+            - Returns the number of nodes in the tree.
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         self.root = self.insert_aux(self.root, key, item)
 
     def insert_aux(self, current: TreeNode, key: K, item: I) -> TreeNode:
+        """
+            Explain:
+            - Returns the number of nodes in the tree.
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         """
             Attempts to insert an item into the tree, it uses the Key to insert it
             :complexity best: O(CompK) inserts the item at the root.
@@ -103,9 +239,43 @@ class BinarySearchTree(Generic[K, I]):
         return current
 
     def __delitem__(self, key: K) -> None:
+        """
+            Explain:
+            - Returns the number of nodes in the tree.
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         self.root = self.delete_aux(self.root, key)
 
     def delete_aux(self, current: TreeNode, key: K) -> TreeNode:
+        """
+            Explain:
+            - Returns the number of nodes in the tree.
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         """
             Attempts to delete an item from the tree, it uses the Key to
             determine the node to delete.
@@ -140,6 +310,23 @@ class BinarySearchTree(Generic[K, I]):
 
     def get_successor(self, current: TreeNode) -> TreeNode:
         """
+            Explain:
+            - Returns the number of nodes in the tree.
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
+        """
             Get successor of the current node.
             It should be a child node having the smallest key among all the
             larger keys.
@@ -155,6 +342,23 @@ class BinarySearchTree(Generic[K, I]):
 
     def get_minimal(self, current: TreeNode) -> TreeNode:
         """
+            Explain:
+            - Returns the number of nodes in the tree.
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
+        """
             Get a node having the smallest key in the current sub-tree.
         """
         if current is None:
@@ -165,17 +369,68 @@ class BinarySearchTree(Generic[K, I]):
 
 
     def is_leaf(self, current: TreeNode) -> bool:
+        """
+            Explain:
+            - Returns the number of nodes in the tree.
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         """ Simple check whether or not the node is a leaf. """
 
         return current.left is None and current.right is None
 
     def draw(self, to=sys.stdout):
+        """
+            Explain:
+            - Returns the number of nodes in the tree.
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         """ Draw the tree in the terminal. """
 
         # get the nodes of the graph to draw recursively
         self.draw_aux(self.root, prefix='', final='', to=to)
 
     def draw_aux(self, current: TreeNode, prefix='', final='', to=sys.stdout) -> K:
+        """
+            Explain:
+            - Returns the number of nodes in the tree.
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         """ Draw a node and then its children. """
 
         if current is not None:
@@ -190,6 +445,23 @@ class BinarySearchTree(Generic[K, I]):
             print('{0}'.format(real_prefix), file=to)
 
     def kth_smallest(self, k: int, current: TreeNode) -> TreeNode:
+        """
+            Explain:
+            - Returns the number of nodes in the tree.
+
+            Args:
+            - None
+
+            Raises:
+            - None
+
+            Returns:
+            - length of the BST
+
+            Complexity:
+            - Worst case: O(1), return statement
+            - Best case: O(1), return statement
+       """
         """
         Finds the kth smallest value by key in the subtree rooted at current.
         """
