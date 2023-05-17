@@ -90,7 +90,7 @@ class BinarySearchTree(Generic[K, I]):
         """
         if current is None:  # base case: at the leaf
             current = TreeNode(key, item=item)
-            current.subtree_size -= 1  # init() sets it to 1 already
+            current.subtree_size -= 1  # init() sets it to 1d already
             self.length += 1
         elif key < current.key:
             current.left = self.insert_aux(current.left, key, item)
@@ -130,7 +130,7 @@ class BinarySearchTree(Generic[K, I]):
 
             # general case => find a successor
             succ = self.get_successor(current)
-            current.key  = succ.key
+            current.key = succ.key
             current.item = succ.item
             current.right = self.delete_aux(current.right, succ.key)
 
@@ -209,3 +209,41 @@ class BinarySearchTree(Generic[K, I]):
             if not current.right:
                 raise ValueError('k is too large')
             return self.kth_smallest(k - left_size - 1, current.right)
+
+if __name__ == "__main__":
+    BST = BinarySearchTree()
+    BST[88] = 1
+    BST[70] = 2
+    BST[60] = 3
+    BST[75] = 2
+    BST[50] = 3
+    BST[64] = 2
+    BST[73] = 3
+    BST[78] = 2
+    BST[40] = 3
+    BST[53] = 2
+    BST[61] = 3
+    BST[65] = 2
+    BST[72] = 3
+    BST[74] = 2
+    BST[77] = 3
+    BST[80] = 1
+    BST[115] = 2
+    BST[98] = 3
+    BST[120] = 2
+    BST[96] = 3
+    BST[105] = 2
+    BST[117] = 3
+    BST[145] = 2
+    BST[95] = 3
+    BST[97] = 2
+    BST[99] = 3
+    BST[107] = 2
+    BST[116] = 3
+    BST[118] = 2
+    BST[130] = 3
+    BST[199] = 0
+
+    for i in range(1, 32):
+        kth = BST.kth_smallest(i, BST.root)
+        print(i, ",", kth.key)
