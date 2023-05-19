@@ -35,14 +35,15 @@ class BeeNode:
             - Worst case:
             - Best case:
        """
+        strng = self.get_key(point)
+        return self.nodes[strng]
+
+    def get_key(self, point):
         x_self, x_point = self.key[0], point[0]
         y_self, y_point = self.key[1], point[1]
         z_self, z_point = self.key[2], point[2]
 
-        # makes a string such as +++ if the point is greater than the node's key in all dimensions
-        strng = ("+" if x_self < x_point else "-") + ("+" if y_self < y_point else "-") + ("+" if z_self < z_point else "-")
-
-        return self.nodes[strng]
+        return ("+" if x_self < x_point else "-") + ("+" if y_self < y_point else "-") + ("+" if z_self < z_point else "-")
 
 
 class ThreeDeeBeeTree(Generic[I]):
@@ -235,12 +236,7 @@ class ThreeDeeBeeTree(Generic[I]):
             print(key, current.key)
             raise ValueError('Inserting duplicate item')
         else:
-            x_self, x_point = current.key[0], key[0]
-            y_self, y_point = current.key[1], key[1]
-            z_self, z_point = current.key[2], key[2]
-
-            # makes a string such as +++ if the point is greater than the node's key in all dimensions
-            strng = ("+" if x_self < x_point else "-") + ("+" if y_self < y_point else "-") + ("+" if z_self < z_point else "-")
+            strng = current.get_key(key)
             current.nodes[strng] = self.insert_aux(current.nodes[strng], key, item)
 
         current.subtree_size += 1

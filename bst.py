@@ -322,7 +322,7 @@ class BinarySearchTree(Generic[K, I]):
 
         return current
 
-    def get_successor(self, current: TreeNode) -> TreeNode:
+    def get_successor(self, current: TreeNode) -> TreeNode | None:
         """
             Explain:
             - Get successor of the current node.
@@ -351,10 +351,7 @@ class BinarySearchTree(Generic[K, I]):
             raise ValueError('non existing item')
         if current.right is None:
             return None
-        current = current.right
-        while current.left is not None:
-            current = current.left
-        return current
+        return self.get_minimal(current.right)
 
     def get_minimal(self, current: TreeNode) -> TreeNode:
         """
@@ -386,8 +383,12 @@ class BinarySearchTree(Generic[K, I]):
        """
         if current is None:
             raise ValueError('non existing item')
-        while current.left is not None:
-            current = current.left
+
+        while self.is_leaf(current) is False:
+            if current.left is not None:
+                current = current.left
+            else:
+                current = current.right
         return current
 
 
