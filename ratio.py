@@ -65,7 +65,7 @@ class Percentiles(Generic[T]):
             - This list doesn't need to be sorted.
 
             Args:
-            - 
+            -
 
             Raises:
             -
@@ -110,7 +110,6 @@ class Percentiles(Generic[T]):
                     inorder_aux(current.right, f, _min, _max)
                 elif current.key > _max:
                     inorder_aux(current.left, f, _min, _max)
-
         out = []
         inorder_aux(self.items.root, lambda item: out.append(item), num_smaller, num_larger)
         return out

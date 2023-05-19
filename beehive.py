@@ -47,6 +47,7 @@ class BeehiveSelector:
         self.heap = MaxHeap(self.max_beehives)
 
     def set_all_beehives(self, hive_list: List[Beehive]):
+        self.heap = MaxHeap(self.max_beehives)
         for beehive in hive_list:
             self.add_beehive(beehive)
     
@@ -75,7 +76,7 @@ class BeehiveSelector:
             b_x, b_y, b_z = beehive.x, beehive.y, beehive.z
             value = a_1 * b_x + a_2 * b_y + a_3 * b_z
             hives.append(value)
-            
+
         hives.sort(reverse=True)
 
         if 0 < k <= len(hives):

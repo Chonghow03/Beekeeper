@@ -24,6 +24,7 @@ def make_ordering(my_coordinate_list: list[Point]) -> list[Point]:
             # ratio(): 3 times O(log(n) + o) = O(log(n) + o)
             selected = remaining[0]  # fallback if no common point is found
             for _p in x.ratio(order_ratio, order_ratio):  # find a point that is in all 3 lists
+                print(_p)
                 if any(_p[1] in tup for tup in y.ratio(order_ratio, order_ratio)) \
                         and any(_p[1] in tup for tup in z.ratio(order_ratio, order_ratio)):
                     selected = _p[1]
@@ -46,7 +47,7 @@ def make_ordering(my_coordinate_list: list[Point]) -> list[Point]:
             for i in range(2):
                 for j in range(2):
                     for k in range(2):
-                        lst[i][j][k] = make_ordering_aux(current, lst[i][j][k])
+                        make_ordering_aux(current, lst[i][j][k])
         return current
 
     return make_ordering_aux([], my_coordinate_list)
