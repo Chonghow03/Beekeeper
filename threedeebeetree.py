@@ -153,17 +153,12 @@ class ThreeDeeBeeTree(Generic[I]):
             - Attempts to get an item in the tree, it uses the Key to attempt to find it
 
             Args:
-            -
-
-            Raises:
-            -
+            - key, a point
 
             Returns:
-            -
+            - a BeeNode
 
-            Complexity:
-            - Worst case:
-            - Best case:
+            Complexity: O(Comp(get_tree_node_by_key)). See the function.
         """
         node = self.get_tree_node_by_key(key)
         return node.item
@@ -182,9 +177,7 @@ class ThreeDeeBeeTree(Generic[I]):
             Returns:
             - A BeeNode which is the target node by given key
 
-            Complexity:
-            - Worst case:
-            - Best case:
+            Complexity: O(Comp(get_tree_node_by_key_aux)). See the function.
         """
         return self.get_tree_node_by_key_aux(self.root, key)
 
@@ -258,28 +251,44 @@ class ThreeDeeBeeTree(Generic[I]):
             - Attempts to insert an item into the tree, it uses the Key to insert it
 
             Args:
-            -
+            - current, BeeNode which is the root of the 3DBT
+            - key, the key of the node have to insert
+            - item, the item of the node have to store
 
             Raises:
-            -
+            - ValueError, if the item is already existed
 
             Returns:
-            -
+            - current, the root of the 3DBT
 
             Complexity:
-            - Worst case:
-            - Best case:
+            similar to that of BST's insert_aux method, with the only difference being that
+            we call get_key() on the point to get the key to insert into the tree.
+
+
+            - Worst case: O(CompK * D) inserting at the bottom of the tree
+                        - where CompK is the complexity of comparing the keys
+                Balanced tree:
+                        - O(log(N) * (Comp< or Comp>))
+                        - where D is the depth of the tree
+                Unbalanced tree:
+                        - O(N * (Comp< or Comp>))
+                        - All assignments, numerical operations, return statements are constant time, O(1).
+
+            - Best case: O(1 * CompK), when all the N nodes are at one side of the tree, and we insert at the other side
+                        - Note that this only happens if the tree is unbalanced
+                        - CompK is the complexity of comparing the keys
+                        - All assignments, numerical operations, return statements are constant time, O(1).
         """
         if current is None:  # base case: at the leaf
             current = BeeNode(key, item=item)
             current.subtree_size -= 1  # init() sets it to 1 already
             self.length += 1
         elif key == current.key:
-            print(key, current.key)
             raise ValueError('Inserting duplicate item')
         else:
-            strng = current.get_key(key)
-            current.nodes[strng] = self.insert_aux(current.nodes[strng], key, item)
+            key = current.get_key(key)
+            current.nodes[key] = self.insert_aux(current.nodes[key], key, item)
 
         current.subtree_size += 1
         return current
@@ -287,20 +296,23 @@ class ThreeDeeBeeTree(Generic[I]):
     def is_leaf(self, current: BeeNode) -> bool:
         """
             Explain:
-            - Simple check whether or not the node is a leaf.
+            - Simple check whether or not the node is a leaf. It looks at the nodes dictionary, and if all of the
+            values are None, then it is a leaf.
 
             Args:
-            -
+            - current, the node to check
 
-            Raises:
-            -
 
             Returns:
-            -
+            - boolean, whether or not the node is a leaf
 
-            Complexity:
-            - Worst case:
-            - Best case:
+            Complexity: O(1)
+            The one liner is essentially three different operations, each of which is a for loop.
+            - values(): O(8), since the for loop is iterating over a dictionary of size 8
+            - values is None for values(): O(8) again
+            - all(): O(8) again
+
+            Overall: O(8) = O(1)
         """
         return all(value is None for value in current.nodes.values())
 
