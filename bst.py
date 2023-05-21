@@ -168,12 +168,12 @@ class BinarySearchTree(Generic[K, I]):
 
             Complexity:
             - Worst case: O(CompK * D) where D is the depth of the tree
-                - In balanced BST case: O(log(N) * (Comp== + Comp< + Comp>))
+                - In balanced BST case: O(log(N) * (Comp== + Comp< or Comp>))
                     - Where N is the number of node in BST
                     - When the target node is a leaf
                     - Since the BST is balanced, so we have to traverse nearly half of the node for checking each node.
 
-                - In unbalanced BST case: O(N * (Comp== + Comp< + Comp>))
+                - In unbalanced BST case: O(N * (Comp== + Comp< or Comp>))
                     - Where N is the number of node in BST
                     - When the target node is a leaf or key not found
                     - Since the BST is unbalanced, so we have to traverse almost every node for checking.
@@ -234,11 +234,16 @@ class BinarySearchTree(Generic[K, I]):
 
             Complexity:
             - Worst case: O(CompK * D) inserting at the bottom of the tree
+                        - where CompK is the complexity of comparing the keys
+                Balanced tree:
+                        - O(log(N) * (Comp< or Comp>))
                         - where D is the depth of the tree
-                        - CompK is the complexity of comparing the keys
+                Unbalanced tree:
+                        - O(N * (Comp< or Comp>))
                         - All assignments, numerical operations, return statements are constant time, O(1).
 
-            - Best case: O(CompK) inserts the item at the root.
+            - Best case: O(1 * CompK), when all the N nodes are at one side of the tree, and we insert at the other side
+                        - Note that this only happens if the tree is unbalanced
                         - CompK is the complexity of comparing the keys
                         - All assignments, numerical operations, return statements are constant time, O(1).
        """
@@ -292,13 +297,32 @@ class BinarySearchTree(Generic[K, I]):
             - A TreeNode which is the root of the BST
 
             Complexity:
-            - Worst case:
-            - Best case:
+            - Worst case: O(CompK * D) inserting at the bottom of the tree
+                        - For deletion, if the node to be deleted is not a leaf, we have to find the successor.
+                        - However, regardless of whether find_successor() is called or not, the complexity is the same.
+                        - This is because the worst case of delete_aux() is when the node to be deleted is a leaf,
+                        but find_successor() is O(D), where D is the depth of the (remaining) tree. Hence, we can view
+                        the overall worst case to be the same in the situations:
+                            - The node to be deleted is a leaf in a tree
+                            - The node to be deleted is not a leaf, but the successor is;
+                        these lead to the same complexity.
+                Balanced tree:
+                        - O(log(N) * (Comp< or Comp>))
+                        - where D is the depth of the tree
+                Unbalanced tree:
+                        - O(N * (Comp< or Comp>))
+                        - All assignments, numerical operations, return statements are constant time, O(1).
+            - Best case: O(1 * CompK), when all the N nodes are at one side of the tree, and we delete at the other side
+                        - Note that this only happens if the tree is unbalanced
+                        - In this case, the deleted node is a leaf, or only has one child,
+                        so there is no call to find_successor().
+                        - this situation is similar to the best case of insert_aux()
+
        """
         if current is None:
             raise ValueError('Deleting non-existent item')
         elif key < current.key:
-            current.left  = self.delete_aux(current.left, key)
+            current.left = self.delete_aux(current.left, key)
         elif key > current.key:
             current.right = self.delete_aux(current.right, key)
         else:  # we found our key => do actual deletion
@@ -337,14 +361,18 @@ class BinarySearchTree(Generic[K, I]):
             - A TreeNode which is the successor of the current node.
 
             Complexity:
-            - Worst case: O(D)
+
+            the complexity follows that of the get_minimal() function.
+            - Worst case: O(log(N))
+                        - Where N is the total number of nodes in BST
+                        - This happens when the current node is the root of the BST, and we have an unbalanced tree with
+                        all the nodes skewed, and the height of the tree is log(N).
                         - where D is the leftmost depth of the current.right subtree.
-                        - Since we have to find the successor of the current node
-                        - which located at the left bottom of the current.right,
-                        - thus we have to traverse D times to get the successor node.
+
 
             - Best case: O(1)
-                        - When the current node does not have right child node
+                        - When the current.right node is a leaf, i.e. it does not have any child node.
+                        - Then we return the successor to be the current.right node.
                         - All assignments, if statements and return statement are constant time, O(1)
        """
         if current is None:
@@ -368,17 +396,13 @@ class BinarySearchTree(Generic[K, I]):
             - A TreeNode which has the minimum key.
 
             Complexity:
-            - Worst case: O(L)
-                        - Where L is the total number of leftmost node in BST
-                        - Since the minimal node is located at the left bottom of the tree.
-                        - We just have to traverse the leftmost node, so its depends on how long of the leftmost node.
+            - Worst case: O(log(N))
+                        - Where N is the total number of nodes in BST
+                        - This happens when the current node is the root of the BST, and we have an unbalanced tree with
+                        all the nodes skewed, and the height of the tree is log(N).
 
-            - Best case: O(log(N))
-                        - Where N is the total number of the node in the tree.
-                        - Since the minimal node is located at the left bottom of the tree.
-                        - When the tree is balanced,
-                        - we have to traverse the nodes of each left subtree for checking each node.
-                        - Thus, almost half of the nodes of subtree does not require to check.
+            - Best case: O(1), when the current node is the minimal node
+                        - This only happens when the current node is a leaf, i.e. it does not have any child node.
 
        """
         if current is None:
@@ -450,11 +474,22 @@ class BinarySearchTree(Generic[K, I]):
             - A TreeNode which is the kth smallest value by key in the subtree rooted at current.
 
             Complexity:
-            - Worst case:
-            - Best case:
+            - Worst case: O(D), where D is the depth of the current node subtree.
+                - Unbalanced tree: O(N), where N is the total number of nodes in BST
+                    - This happens when the current node is the root of the BST, and we have an unbalanced tree with
+                    all the nodes skewed, and the height of the tree is N.
+                    Then we have to traverse the tree from the root to the leaf,
+                    calling kth_smallest() N times, which gives us O(N) complexity.
+                - Balanced tree: O(log(N)), where N is the total number of nodes in BST
+                    - In this case, the height of the tree is log(N), and the node we are looking for is a leaf.
+                    - We have to traverse the tree from the root to the leaf, calling kth_smallest() log(N) times.
+
+            - Best case: O(1), when k gives us the root of the subtree.
+                -This occurs when k == current.left.subtree_size + 1, i.e. the root of the subtree is the kth smallest value.
+                -Then we just return current, which gives us complexity of O(1).
        """
         if current is None:
-            raise ValueError('node is None')
+            raise ValueError('current node is None.')
 
         if current.left:
             left_size = current.left.subtree_size
@@ -467,7 +502,7 @@ class BinarySearchTree(Generic[K, I]):
             return self.kth_smallest(k, current.left)
         else:
             if not current.right:
-                raise ValueError('k is too large')
+                raise ValueError('Value of K is too large.')
             return self.kth_smallest(k - left_size - 1, current.right)
 
 if __name__ == "__main__":
