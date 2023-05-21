@@ -17,8 +17,8 @@ class TreeNode(Generic[K, I]):
 
     key: K
     item: I = None
-    left: TreeNode|None = None
-    right: TreeNode|None = None
+    left: TreeNode | None = None
+    right: TreeNode | None = None
     # This value should be maintained by yourself in bst.py
     subtree_size: int = 1
 
