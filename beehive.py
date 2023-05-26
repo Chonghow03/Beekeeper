@@ -104,33 +104,45 @@ class BeehiveSelector:
         Args:
             - hive: the beehive to be added to the MaxHeap
         Complexity:
-            O(log n) Logarithmic time because of heap add() has a complexity of O(log n)
+            - Best: O(1) Constant time because of heap add() has a complexity of O(1)
+                    - when the element is added to the bottom of the heap without rising up
+
+            - Worst: O(log n) Logarithmic time because of heap add() has a complexity of O(log n)
+                    - when the element is added to the top of the heap and has to rise up
         """
         self.heap.add(hive)
     
     def harvest_best_beehive(self):
         """
-        Complexity: O(log n)
-            - heap get_max() has a complexity of O(log n)
-            - calculate_emerald() - O(1)
-            - update volume - O(1)
-            - add_beehive() - O(log n)
-            - return emerald - O(1)
+        Explain:
+            - List to store the values of the linear equation for each beehive
+            - Calculate the value of the linear equation for each beehive and store it in the list
+            - Replace with the appropriate values for each beehive
+            - Sort the list of values in descending order
+            - Return the kth largest value
+            - Return None if k is out of range
 
-            overall: O(2 * log n) = O(log n)
+        Complexity:
+            -Worst = O(log n)
+                - heap get_max() has a complexity of O(log n) where n is the number of nodes in the heap.
+                - calculate_emerald() - O(1)
+                - update volume - O(1)
+                - add_beehive() - O(log n)
+                - return emerald - O(1)
+
+            -Best = O(1)
+                - heap get_max() has a complexity of O(1) where n is the number of nodes in the heap.
+                - When all the elements value in the heap are the same.
+                - calculate_emerald() - O(1)
+                - update volume - O(1)
+                - add_beehive() - O(log n)
+                - return emerald - O(1)
         """
         best_beehive = self.heap.get_max()
         emerald = best_beehive.calculate_emerald()
         best_beehive.volume -= best_beehive.capacity
         self.add_beehive(best_beehive)
         return emerald
-
-    # List to store the values of the linear equation for each beehive
-    # Calculate the value of the linear equation for each beehive and store it in the list
-    # Replace with the appropriate values for each beehive
-    # Sort the list of values in descending order
-    # Return the kth largest value
-    # Return None if k is out of range
 
     def kth_largest(self,k: int, a_1: float, a_2: float, a_3: float):
         hives = []
