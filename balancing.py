@@ -21,14 +21,32 @@ def make_ordering(my_coordinate_list: list[Point]) -> list[Point]:
                 y.add_point((_p[1], _p))
                 z.add_point((_p[2], _p))
 
-            # ratio(): 3 times O(log(n) + o) = O(log(n) + o)
-            selected = remaining[0]  # fallback if no common point is found
-            for _p in x.ratio(order_ratio, order_ratio):  # find a point that is in all 3 lists
-                print(_p)
-                if any(_p[1] in tup for tup in y.ratio(order_ratio, order_ratio)) \
-                        and any(_p[1] in tup for tup in z.ratio(order_ratio, order_ratio)):
-                    selected = _p[1]
-                    break
+            # output_x = x.ratio(order_ratio, order_ratio)  # 3 times O(log(n) + o) = O(log(n) + o)
+            # output_y = y.ratio(order_ratio, order_ratio)
+            # output_z = z.ratio(order_ratio, order_ratio)
+            #
+            # # ratio(): 3 times O(log(n) + o) = O(log(n) + o)
+            # selected = remaining[0]  # fallback if no common point is found
+
+            # for _p in output_x:  # find a point that is in all 3 lists
+            #     if any(_p[1] in tup for tup in output_y) \
+            #             and any(_p[1] in tup for tup in output_z):
+            #         selected = _p[1]
+            #         break
+
+            output_x = x.ratio(order_ratio, order_ratio)  # 3 times O(log(n) + o) = O(log(n) + o)
+            output_y = y.ratio(order_ratio, order_ratio)
+            output_z = z.ratio(order_ratio, order_ratio)
+
+            lst_x = {_p[1] for _p in output_x}  # O(3 * n) = O(n)
+            lst_y = {_p[1] for _p in output_y}
+            lst_z = {_p[1] for _p in output_z}
+
+            common = list(lst_x.intersection(lst_y, lst_z))  # 2 times O(min(m, n)) = O(?)
+            # print('common: ', common)
+
+            # get the first common point, or the first point in the list
+            selected = common[0] if common else remaining[0]  # O(1)
 
             current.append(selected)  # O(1)
             remaining.remove(selected)  # O(1)
@@ -131,7 +149,7 @@ def make_ordering2(my_coordinate_list: list[Point]) -> list[Point]:
 
             # then, the cost of the recursion is O(log(n) * 8 * 1) = O(log(n))
             for sub_lst in lst:  # O(8 * 1) = O(1)
-                current = make_ordering_aux(current, sub_lst)  # O(???) (n log n)
+                make_ordering_aux(current, sub_lst)  # O(???) (n log n)
 
         return current
 

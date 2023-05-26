@@ -65,7 +65,7 @@ class Percentiles(Generic[T]):
             - This list doesn't need to be sorted.
 
             Args:
-            -
+            - 
 
             Raises:
             -
@@ -77,13 +77,19 @@ class Percentiles(Generic[T]):
             - Worst case:
             - Best case:
        """
-        nth_smaller = ceil(x / 100 * len(self.items)) +1                # how many from left to remove
+        nth_smaller = ceil(x / 100 * len(self.items)) + 1                # how many from left to remove
         nth_larger = len(self.items) - ceil(y / 100 * len(self.items))  # how many from right to remove, -1 to account for 0 index
-        # todo fix edge case
 
-        num_smaller = self.items.kth_smallest(nth_smaller, self.items.root).key
-        num_larger = self.items.kth_smallest(nth_larger, self.items.root).key
-        def inorder_aux(current: T, f, _min, _max) -> None:
+        if nth_larger < nth_smaller:
+            return []
+        # if nth_larger == 0 or nth_smaller == len(self.items) +1:
+        #     return []
+
+        _min = self.items.kth_smallest(nth_smaller, self.items.root).key
+        _max = self.items.kth_smallest(nth_larger, self.items.root).key
+
+        print(_min, _max)
+        def inorder_aux(current: T, f) -> None:
             """
                 Explain:
                 -
@@ -102,27 +108,84 @@ class Percentiles(Generic[T]):
                 - Best case:
            """
             if current is not None:  # if not a base case
+                if current.key > _min:
+                    inorder_aux(current.left, f)
                 if _min <= current.key <= _max:
                     f(current.item)
-                    inorder_aux(current.left, f, _min, _max)
-                    inorder_aux(current.right, f, _min, _max)
-                elif current.key < _min:
-                    inorder_aux(current.right, f, _min, _max)
-                elif current.key > _max:
-                    inorder_aux(current.left, f, _min, _max)
+                if current.key < _max:
+                    inorder_aux(current.right, f)
+
+
         out = []
-        inorder_aux(self.items.root, lambda item: out.append(item), num_smaller, num_larger)
+        inorder_aux(self.items.root, lambda item: out.append(item))
         return out
 
 
 
 if __name__ == "__main__":
-    points = list(range(50))
-    import random
+    # points = list(range(50))
+    # import random
+    #
+    # random.shuffle(points)
+    # p = Percentiles()
+    # for point in points:
+    #     p.add_point(point)
+    # # Numbers from 8 to 16.
+    # print(p.ratio(15, 66))
 
-    random.shuffle(points)
-    p = Percentiles()
-    for point in points:
-        p.add_point(point)
-    # Numbers from 8 to 16.
-    print(p.ratio(15, 66))
+    BST = BinarySearchTree()
+    BST[88] = 1
+    BST[70] = 2
+    BST[60] = 3
+    BST[75] = 2
+    BST[50] = 3
+    BST[64] = 2
+    BST[73] = 3
+    BST[78] = 2
+    BST[40] = 3
+    BST[53] = 2
+    BST[61] = 3
+    BST[65] = 2
+    BST[72] = 3
+    BST[74] = 2
+    BST[77] = 3
+    BST[80] = 1
+    BST[115] = 2
+    BST[98] = 3
+    BST[120] = 2
+    BST[96] = 3
+    BST[105] = 2
+    BST[117] = 3
+    BST[145] = 2
+    BST[95] = 3
+    BST[97] = 2
+    BST[99] = 3
+    BST[107] = 2
+    BST[116] = 3
+    BST[118] = 2
+    BST[130] = 3
+    BST[199] = 0
+    #
+    # r = Percentiles()
+    # r.add_point(88)
+    # r.add_point(70)
+    # r.add_point(60)
+    # r.add_point(75)
+    # r.add_point(50)
+    # r.add_point(64)
+    # r.add_point(73)
+    # r.add_point(78)
+    # r.add_point(40)
+    # r.add_point(53)
+    # r.add_point(61)
+    # r.add_point(65)
+    # r.add_point(72)
+    # r.add_point(74)
+    # r.add_point(77)
+    # r.add_point(80)
+    # r.add_point(115)
+    # r.add_point(98)
+    # r.add_point(120)
+    #
+    # print(r.ratio(0, 0))
+    # print(r.ratio(70, 20))
