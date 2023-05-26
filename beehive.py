@@ -17,44 +17,108 @@ class Beehive:
     volume: int = 0
 
     def calculate_emerald(self):
+        """
+        Calculate the number of emeralds that can be harvested from this beehive.
+        Follows the formula given in the assignment specification.
+
+        Returns:
+            The number of emeralds that can be harvested from this beehive.
+
+        Complexity:
+            O(1) Constant time
+        """
         emerald = min(self.capacity, self.volume) * self.nutrient_factor
         return emerald
 
     def __lt__(self, other):
+        """
+        Complexity:
+            O(1) Constant time
+        """
         if self.calculate_emerald() < other.calculate_emerald():
             return True
         return False
 
     def __gt__(self, other):
+        """
+        Complexity:
+            O(1) Constant time
+        """
         if self.calculate_emerald() > other.calculate_emerald():
             return True
         return False
 
     def __le__(self, other):
+        """
+        Complexity:
+            O(1) Constant time
+        """
         if self.calculate_emerald() <= other.calculate_emerald():
             return True
         return False
 
     def __ge__(self, other):
+        """
+        Complexity:
+            O(1) Constant time
+        """
         if self.calculate_emerald() >= other.calculate_emerald():
             return True
         return False
 
 class BeehiveSelector:
+    """
+    A class that stores a list of beehives, and allow us to select the best beehives for the day
+    by calculating the number of emeralds that can be harvested from each beehive.
+    """
 
     def __init__(self, max_beehives: int):
+        """
+        Explain:
+            - Initialises a MaxHeap to store the beehives
+        Args:
+            - max_beehives: the maximum number of beehives that can be stored in the MaxHeap
+        Complexity:
+            O(1) Constant time
+        """
         self.max_beehives = max_beehives
         self.heap = MaxHeap(self.max_beehives)
 
     def set_all_beehives(self, hive_list: List[Beehive]):
-        self.heap = MaxHeap(self.max_beehives)
+        """
+        Explain:
+            - Adds all the beehives in the list to the MaxHeap
+        Args:
+            - hive_list: the list of beehives to be added to the MaxHeap
+        Complexity:
+            O(n log n)
+        assignment requirement: O(M), M is len(hive_list)
+        """
         for beehive in hive_list:
             self.add_beehive(beehive)
     
     def add_beehive(self, hive: Beehive):
+        """
+        Explain:
+            - Adds a beehive to the MaxHeap
+        Args:
+            - hive: the beehive to be added to the MaxHeap
+        Complexity:
+            O(log n) Logarithmic time because of heap add() has a complexity of O(log n)
+        """
         self.heap.add(hive)
     
     def harvest_best_beehive(self):
+        """
+        Complexity: O(log n)
+            - heap get_max() has a complexity of O(log n)
+            - calculate_emerald() - O(1)
+            - update volume - O(1)
+            - add_beehive() - O(log n)
+            - return emerald - O(1)
+
+            overall: O(2 * log n) = O(log n)
+        """
         best_beehive = self.heap.get_max()
         emerald = best_beehive.calculate_emerald()
         best_beehive.volume -= best_beehive.capacity
@@ -76,7 +140,7 @@ class BeehiveSelector:
             b_x, b_y, b_z = beehive.x, beehive.y, beehive.z
             value = a_1 * b_x + a_2 * b_y + a_3 * b_z
             hives.append(value)
-
+            
         hives.sort(reverse=True)
 
         if 0 < k <= len(hives):
