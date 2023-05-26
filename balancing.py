@@ -120,8 +120,8 @@ def make_ordering(my_coordinate_list: list[Point]) -> list[Point]:
 
     return make_ordering_aux([], my_coordinate_list)
 
-#
-# def make_ordering2(my_coordinate_list: list[Point]) -> list[Point]:
+
+# def make_ordering(my_coordinate_list: list[Point]) -> list[Point]:
 #     ratio = 1 / 7 * 100  # get ratio in percent
 #
 #     def make_ordering_aux(current, remaining):
@@ -204,7 +204,7 @@ def make_ordering(my_coordinate_list: list[Point]) -> list[Point]:
 #         return current
 #
 #     return make_ordering_aux([], my_coordinate_list)
-#
+
 #
 # def make_ordering3(my_coordinate_list: list[Point]) -> list[Point]:
 #     ratio = 1 / 7 * 100  # get ratio in percent

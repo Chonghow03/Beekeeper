@@ -287,8 +287,8 @@ class ThreeDeeBeeTree(Generic[I]):
         elif key == current.key:
             raise ValueError('Inserting duplicate item')
         else:
-            key = current.get_key(key)
-            current.nodes[key] = self.insert_aux(current.nodes[key], key, item)
+            k_ = current.get_key(key)
+            current.nodes[k_] = self.insert_aux(current.nodes[k_], key, item)
 
         current.subtree_size += 1
         return current
