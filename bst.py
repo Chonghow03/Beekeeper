@@ -363,10 +363,10 @@ class BinarySearchTree(Generic[K, I]):
             Complexity:
 
             the complexity follows that of the get_minimal() function.
-            - Worst case: O(log(N))
+            - Worst case: O(N)
                         - Where N is the total number of nodes in BST
                         - This happens when the current node is the root of the BST, and we have an unbalanced tree with
-                        all the nodes skewed, and the height of the tree is log(N).
+                        all the nodes skewed, and the height of the tree is N.
                         - where D is the leftmost depth of the current.right subtree.
 
 
@@ -396,10 +396,10 @@ class BinarySearchTree(Generic[K, I]):
             - A TreeNode which has the minimum key.
 
             Complexity:
-            - Worst case: O(log(N))
+            - Worst case: O(N)
                         - Where N is the total number of nodes in BST
                         - This happens when the current node is the root of the BST, and we have an unbalanced tree with
-                        all the nodes skewed, and the height of the tree is log(N).
+                        all the nodes skewed, and the height of the tree is N.
 
             - Best case: O(1), when the current node is the minimal node
                         - This only happens when the current node is a leaf, i.e. it does not have any child node.

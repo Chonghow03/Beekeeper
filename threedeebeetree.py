@@ -15,11 +15,6 @@ class BeeNode:
         default_factory=lambda: {"+++": None, "++-": None, "+-+": None, "+--": None,
                                  "-++": None, "-+-": None, "--+": None, "---": None})
 
-    # def __init__(self, key, item):  # i made this
-    #     self.nodes = {"+++": None, "++-": None, "+-+": None, "+--": None, "-++": None, "-+-": None, "--+": None, "---": None}
-    #     self.key = key
-    #     self.item = item
-
     def get_child_for_key(self, point: Point) -> BeeNode | None:
         """
             Explain:
@@ -134,12 +129,19 @@ class ThreeDeeBeeTree(Generic[I]):
 
             Returns:
             - Boolean
-                - true, if
+                - true, if the key is in the 3DBT.
+                - false, if the key is not in the 3DBT.
 
             Complexity:
             Since get_tree_node_by_key has a complexity of O(log n)
-            - Worst case:
-            - Best case:
+            - Worst case:O(CompK * D) where D is the depth of the tree
+                        - In balanced BST case: O(log(N) * (Comp== + Comp< or Comp>))
+                            - Where N is the number of node in BST
+                        - In unbalanced BST case: O(N * (Comp== + Comp< or Comp>))
+                            - Where N is the number of node in BST
+
+            - Best case:In balanced and unbalanced BST case: O(Comp==)
+                    - Return statement is constant time, O(1).
         """
         try:
             self.get_tree_node_by_key(key)
@@ -228,20 +230,33 @@ class ThreeDeeBeeTree(Generic[I]):
     def __setitem__(self, key: Point, item: I) -> None:
         """
             Explain:
-            -
+            - Attempts to insert an item into the tree, it uses the Key to insert it
 
             Args:
-            -
-
-            Raises:
-            -
+            - key, the key of the node have to insert
+            - item, the item of the node have to store
 
             Returns:
-            -
+            - current, the root of the 3DBT
 
             Complexity:
-            - Worst case:
-            - Best case:
+            similar to that of BST's insert_aux method, with the only difference being that
+            we call get_key() on the point to get the key to insert into the tree.
+
+
+            - Worst case: O(CompK * D) inserting at the bottom of the tree
+                        - where CompK is the complexity of comparing the keys
+                Balanced tree:
+                        - O(log(N) * (Comp< or Comp>))
+                        - where D is the depth of the tree
+                Unbalanced tree:
+                        - O(N * (Comp< or Comp>))
+                        - All assignments, numerical operations, return statements are constant time, O(1).
+
+            - Best case: O(1 * CompK), when all the N nodes are at one side of the tree, and we insert at the other side
+                        - Note that this only happens if the tree is unbalanced
+                        - CompK is the complexity of comparing the keys
+                        - All assignments, numerical operations, return statements are constant time, O(1).
         """
         self.root = self.insert_aux(self.root, key, item)
 
@@ -287,8 +302,8 @@ class ThreeDeeBeeTree(Generic[I]):
         elif key == current.key:
             raise ValueError('Inserting duplicate item')
         else:
-            key = current.get_key(key)
-            current.nodes[key] = self.insert_aux(current.nodes[key], key, item)
+            k_ = current.get_key(key)
+            current.nodes[k_] = self.insert_aux(current.nodes[k_], key, item)
 
         current.subtree_size += 1
         return current
