@@ -164,3 +164,13 @@ class Percentiles(Generic[T]):
         # returns a list of all items in the range, that is also sorted
         inorder_aux_bounded(self.items.root, lambda item: out.append(item))
         return out
+
+if __name__ == "__main__":
+    points = list(range(50))
+    import random
+    random.shuffle(points)
+    p = Percentiles()
+    for point in points:
+        p.add_point(point)
+    # Numbers from 8 to 16.
+    print(p.ratio(15, 66))

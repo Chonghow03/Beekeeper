@@ -1,5 +1,5 @@
 from __future__ import annotations
-from threedeebeetree import Point
+from threedeebeetree import Point, ThreeDeeBeeTree
 from ratio import Percentiles
 
 
@@ -122,3 +122,4 @@ def make_ordering(my_coordinate_list: list[Point]) -> list[Point]:
         return current
 
     return make_ordering_aux([], my_coordinate_list)
+

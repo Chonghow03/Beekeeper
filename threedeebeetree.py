@@ -57,8 +57,8 @@ class BeeNode:
         y_self, y_point = self.key[1], point[1]
         z_self, z_point = self.key[2], point[2]
 
-        return ("+" if x_self < x_point else "-") + ("+" if y_self < y_point else "-") + (
-            "+" if z_self < z_point else "-")
+        return ("+" if x_self <= x_point else "-") + ("+" if y_self <= y_point else "-") + (
+            "+" if z_self <= z_point else "-")
 
 
 class ThreeDeeBeeTree(Generic[I]):
@@ -297,39 +297,33 @@ class ThreeDeeBeeTree(Generic[I]):
         """
         if current is None:  # base case: at the leaf
             current = BeeNode(key, item=item)
-            current.subtree_size -= 1  # init() sets it to 1 already
             self.length += 1
         elif key == current.key:
             raise ValueError('Inserting duplicate item')
         else:
             k_ = current.get_key(key)
+            current.subtree_size += 1
             current.nodes[k_] = self.insert_aux(current.nodes[k_], key, item)
-
-        current.subtree_size += 1
         return current
 
     def is_leaf(self, current: BeeNode) -> bool:
         """
             Explain:
-            - Simple check whether or not the node is a leaf. It looks at the nodes dictionary, and if all of the
+            - Simple check whether the node is a leaf. It looks at the nodes' dictionary, and if all of the
             values are None, then it is a leaf.
 
             Args:
             - current, the node to check
 
-
             Returns:
-            - boolean, whether or not the node is a leaf
+            - boolean, whether the node is a leaf
 
             Complexity: O(1)
-            The one liner is essentially three different operations, each of which is a for loop.
-            - values(): O(8), since the for loop is iterating over a dictionary of size 8
-            - values is None for values(): O(8) again
-            - all(): O(8) again
-
-            Overall: O(8) = O(1)
+            - worst = best = O(1)
+                -return statement is constant time, O(1).
+                -if comparison is constant time, O(1).
         """
-        return all(value is None for value in current.nodes.values())
+        return current.subtree_size == 1
 
 
 if __name__ == "__main__":
@@ -338,4 +332,7 @@ if __name__ == "__main__":
     tdbt[(1, 5, 2)] = "B"
     tdbt[(4, 3, 1)] = "C"
     tdbt[(5, 4, 0)] = "D"
-    print(tdbt.root.get_child_for_key((4, 3, 1)).subtree_size)  # 2
+    print(tdbt.root.get_child_for_key((4, 3, 1)).subtree_size) # 2
+
+
+
