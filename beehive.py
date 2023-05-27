@@ -208,8 +208,6 @@ if __name__ == "__main__":
                         Beehive(35, 32, 33, capacity=40, nutrient_factor=3, volume=40),
                         Beehive(45, 42, 43, capacity=1, nutrient_factor=85, volume=10),
                         Beehive(55, 52, 53, capacity=400, nutrient_factor=5000, volume=0)])
-    for i in s.heap.the_array:
-        print(i)
     assert s.heap.the_array[1] == Beehive(35, 32, 33, capacity=40, nutrient_factor=3, volume=40)
     assert s.heap.the_array[2] == Beehive(25, 22, 23, capacity=15, nutrient_factor=8, volume=40)
     assert s.heap.the_array[3] == Beehive(15, 12, 13, capacity=40, nutrient_factor=5, volume=15)
@@ -217,6 +215,9 @@ if __name__ == "__main__":
     assert s.heap.the_array[5] == Beehive(55, 52, 53, capacity=400, nutrient_factor=5000, volume=0)
     assert s.heap.length == 5
     assert len(s.heap.the_array) == 11
+
+    for i in s.heap.the_array:
+        print(i)
 
 
     # for i in s.heap.the_array:
