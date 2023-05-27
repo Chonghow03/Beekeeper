@@ -28,13 +28,13 @@ class Percentiles(Generic[T]):
 
             Complexity:
             complexity is the same as BST's insertion.
-            - Worst case: O(__setitem__())(worst) = O(CompK * D) = O(CompK * log(N))
+            - Worst case: O(BST.__setitem__())(worst) = O(CompK * D) = O(CompK * log(N))
                         - when inserting at the bottom of the tree
                         - where D is the depth of the tree (log(N) for a balanced tree; N for an unbalanced tree)
                         - CompK is the complexity of comparing the keys
                         - All assignments, numerical operations, return statements are constant time, O(1).
 
-            - Best case: O(__setitem__())(best) = O(CompK) inserts the item at the root.
+            - Best case: O(BST.__setitem__())(best) = O(CompK) inserts the item at the root.
                         - CompK is the complexity of comparing the keys
                         - All assignments, numerical operations, return statements are constant time, O(1).
        """
@@ -56,11 +56,11 @@ class Percentiles(Generic[T]):
 
             Complexity:
             complexity is the same as BST's deletion.
-            - Worst case: O(Comp(K) * D) = O(Comp(K) * log(N))
+            - Worst case:  O(BST.__delitem__())(worst) = O(Comp(K) * D)
                     - where D is the depth of the tree (log(N) for a balanced tree; N for an unbalanced tree)
                     - CompK is the complexity of comparing the keys
                     - All assignments, numerical operations, return statements are constant time, O(1).
-            - Best case: O(Comp(K))
+            - Best case:  O(BST.__delitem__())(best) = O(Comp(K))
        """
         del self.items[item]
 
