@@ -82,6 +82,19 @@ class MaxHeap(Generic[T]):
             self.sink(1)
         return max_elt
 
+    def heapify(self, an_array: ArrayR[T]) -> None:
+        """
+        Apply bottom-up heap construction in O(n) time.
+        """
+        # copy an_array to self.the_array (shift by 1)
+        for i in range(self.length):
+            self.the_array[i + 1] = an_array[i]
+
+        # heapify every parent
+        for i in range(self.length // 2, 0, -1):
+            self.sink(i)
+
+
 if __name__ == '__main__':
     items = [ int(x) for x in input('Enter a list of numbers: ').strip().split() ]
     heap = MaxHeap(len(items))
