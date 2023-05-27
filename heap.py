@@ -86,6 +86,7 @@ class MaxHeap(Generic[T]):
         """
         Apply bottom-up heap construction in O(n) time.
         """
+        self.length = len(an_array)
         # copy an_array to self.the_array (shift by 1)
         for i in range(self.length):
             self.the_array[i + 1] = an_array[i]
