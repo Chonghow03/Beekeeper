@@ -87,15 +87,16 @@ class BeehiveSelector:
     def set_all_beehives(self, hive_list: List[Beehive]):
         """
         Explain:
-            - Adds all the beehives in the list to the MaxHeap
+            - Updates all the beehives in the list to the MaxHeap
+
         Args:
             - hive_list: the list of beehives to be added to the MaxHeap
+
         Complexity:
-            O(n log n)
-        assignment requirement: O(M), M is len(hive_list)
+            -Worst: O(heap.heapify()) = O(M) where M is the length of the hive_list.
+            -Best = Worst
         """
-        for beehive in hive_list:
-            self.add_beehive(beehive)
+        self.heap.heapify(hive_list)
     
     def add_beehive(self, hive: Beehive):
         """
@@ -140,7 +141,10 @@ class BeehiveSelector:
         """
         best_beehive = self.heap.get_max()
         emerald = best_beehive.calculate_emerald()
-        best_beehive.volume -= best_beehive.capacity
+        if best_beehive.volume < best_beehive.capacity:
+            best_beehive.volume = 0
+        else:
+            best_beehive.volume -= best_beehive.capacity
         self.add_beehive(best_beehive)
         return emerald
 
@@ -162,14 +166,69 @@ class BeehiveSelector:
 
 
 if __name__ == "__main__":
-    s = BeehiveSelector(5)
-    b1, b2, b3, b4, b5 = (
-        Beehive(15, 12, 13, capacity=40, nutrient_factor=5, volume=15),
-        Beehive(25, 22, 23, capacity=15, nutrient_factor=8, volume=40),
-        Beehive(35, 32, 33, capacity=40, nutrient_factor=3, volume=40),
-        Beehive(45, 42, 43, capacity=1, nutrient_factor=85, volume=10),
-        Beehive(55, 52, 53, capacity=400, nutrient_factor=5000, volume=0),
-    )
-    for hive in [b1, b2, b3, b4, b5]:
-        s.add_beehive(hive)
-    print(s.kth_largest(4,1.0,1.0,1.0))
+    # s = BeehiveSelector(5)
+    # b1, b2, b3, b4, b5 = (
+    #     Beehive(15, 12, 13, capacity=40, nutrient_factor=5, volume=15),
+    #     Beehive(25, 22, 23, capacity=15, nutrient_factor=8, volume=40),
+    #     Beehive(35, 32, 33, capacity=40, nutrient_factor=3, volume=40),
+    #     Beehive(45, 42, 43, capacity=1, nutrient_factor=85, volume=10),
+    #     Beehive(55, 52, 53, capacity=400, nutrient_factor=5000, volume=0),
+    # )
+    # for hive in [b1, b2, b3, b4, b5]:
+    #     s.add_beehive(hive)
+
+    # all_emeralds = []
+    # for _ in range(15):
+    #     all_emeralds.append(s.harvest_best_beehive())
+    # print(all_emeralds)
+    #
+    # expected = [
+    #     # Choices are:
+    #     120,  # Beehive b2 or b3
+    #     120,  # Beehive b2 or b3
+    #     120,  # Beehive b2
+    #     # Now, b3 has volume 0 and b2 has volume 10
+    #     85,  # Pick b4 10 times
+    #     85,
+    #     85,
+    #     85,
+    #     85,
+    #     85,
+    #     85,
+    #     85,
+    #     85,
+    #     85,
+    #     80,  # b2
+    #     75,  # b1
+    # ]
+
+    s = BeehiveSelector(10)
+    s.set_all_beehives([Beehive(15, 12, 13, capacity=40, nutrient_factor=5, volume=15),
+                        Beehive(25, 22, 23, capacity=15, nutrient_factor=8, volume=40),
+                        Beehive(35, 32, 33, capacity=40, nutrient_factor=3, volume=40),
+                        Beehive(45, 42, 43, capacity=1, nutrient_factor=85, volume=10),
+                        Beehive(55, 52, 53, capacity=400, nutrient_factor=5000, volume=0)])
+    for i in s.heap.the_array:
+        print(i)
+    assert s.heap.the_array[1] == Beehive(35, 32, 33, capacity=40, nutrient_factor=3, volume=40)
+    assert s.heap.the_array[2] == Beehive(25, 22, 23, capacity=15, nutrient_factor=8, volume=40)
+    assert s.heap.the_array[3] == Beehive(15, 12, 13, capacity=40, nutrient_factor=5, volume=15)
+    assert s.heap.the_array[4] == Beehive(45, 42, 43, capacity=1, nutrient_factor=85, volume=10)
+    assert s.heap.the_array[5] == Beehive(55, 52, 53, capacity=400, nutrient_factor=5000, volume=0)
+    assert s.heap.length == 5
+    assert len(s.heap.the_array) == 11
+
+
+    # for i in s.heap.the_array:
+    #     print(i)
+
+    # s.set_all_beehives([
+    #     Beehive(45, 33, 22, capacity=403, nutrient_factor=35, volume=135),
+    #     Beehive(324, 245, 44, capacity=1533, nutrient_factor=38, volume=4),
+    #     Beehive(324, 33, 33, capacity=403, nutrient_factor=3, volume=403),
+    #     Beehive(4, 43, 433, capacity=1, nutrient_factor=85, volume=10324),
+    #     Beehive(53245, 532, 554, capacity=432, nutrient_factor=5000324, volume=122)])
+
+    # print("____")
+    # for i in s.heap.the_array:
+    #     print(i)
