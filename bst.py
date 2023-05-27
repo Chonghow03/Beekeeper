@@ -264,7 +264,7 @@ class BinarySearchTree(Generic[K, I]):
     def __delitem__(self, key: K) -> None:
         """
             Explain:
-            -
+            - Attempts to delete an item from the tree, it uses the Key to determine the node to delete.
 
             Args:
             - K, the key of the node have to delete
@@ -504,41 +504,3 @@ class BinarySearchTree(Generic[K, I]):
             if not current.right:
                 raise ValueError('Value of K is too large.')
             return self.kth_smallest(k - left_size - 1, current.right)
-
-if __name__ == "__main__":
-    BST = BinarySearchTree()
-    BST[88] = 1
-    BST[70] = 2
-    BST[60] = 3
-    BST[75] = 2
-    BST[50] = 3
-    BST[64] = 2
-    BST[73] = 3
-    BST[78] = 2
-    BST[40] = 3
-    BST[53] = 2
-    BST[61] = 3
-    BST[65] = 2
-    BST[72] = 3
-    BST[74] = 2
-    BST[77] = 3
-    BST[80] = 1
-    BST[115] = 2
-    BST[98] = 3
-    BST[120] = 2
-    BST[96] = 3
-    BST[105] = 2
-    BST[117] = 3
-    BST[145] = 2
-    BST[95] = 3
-    BST[97] = 2
-    BST[99] = 3
-    BST[107] = 2
-    BST[116] = 3
-    BST[118] = 2
-    BST[130] = 3
-    BST[199] = 0
-
-    for i in range(1, 32):
-        kth = BST.kth_smallest(i, BST.root)
-        print(i, ",", kth.key)
