@@ -5,9 +5,6 @@ from ratio import Percentiles
 
 def make_ordering(my_coordinate_list: list[Point]) -> list[Point]:
     """
-    *** We have consulted ed on using an unconventional solution for this task. ***
-    *** Please refer to the following link (private): https://edstem.org/au/courses/10179/discussion/1387178?answer=3111657 ***
-
     Explain:
         - Given a list of points, return a list of points that is ordered in a way so that when inserted into a 3D
         BST, the resulting tree is balanced, i.e. for all nodes, the positive offset and negative offset subtrees of
