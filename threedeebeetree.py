@@ -8,6 +8,10 @@ Point = Tuple[int, int, int]
 
 @dataclass
 class BeeNode:
+    """
+    *** We have consulted ed on using an unconventional solution for this task. ***
+    *** Please refer to the following link (private): https://edstem.org/au/courses/10179/discussion/1387178?answer=3111657 ***
+    """
     key: Point
     item: I
     subtree_size: int = 1
